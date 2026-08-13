@@ -1,58 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GreenPaw POS & Inventory System 🐾
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+GreenPaw is a modern, lightweight Point of Sale (POS) and inventory management system built with Laravel. It is optimized for low-resource environments and can be seamlessly deployed on microcomputers like the **Raspberry Pi Zero W**.
 
-## About Laravel
+## 🛠 Tech Stack
+- **Framework:** Laravel 13.x
+- **Language:** PHP 8.4
+- **Database:** SQLite (No external database service required, saving RAM and CPU)
+- **Frontend:** Blade, TailwindCSS, Alpine.js, Vite
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Deployment Guide for Raspberry Pi Zero W
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The Raspberry Pi Zero W has limited RAM (512MB) and a single-core CPU. To run Laravel smoothly, we use **SQLite** as the database and PHP's built-in server or a lightweight web server like Nginx.
 
-## Learning Laravel
+### 1. System Requirements & Preparation
+Ensure your Raspberry Pi Zero W is running the latest Raspberry Pi OS (Lite version is recommended to save RAM).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+Update the system:
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+sudo apt update && sudo apt upgrade -y
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install PHP 8.4 & SQLite
+Install PHP 8.4 and the required extensions for Laravel and SQLite.
 
-## Contributing
+```bash
+# Add SURY PHP PPA (for Debian/Raspbian)
+sudo apt install -y lsb-release apt-transport-https ca-certificates wget
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Install PHP 8.4 and extensions
+sudo apt install -y php8.4-cli php8.4-sqlite3 php8.4-mbstring php8.4-xml php8.4-curl php8.4-zip unzip git
+```
 
-## Code of Conduct
+### 3. Install Composer
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+sudo mv composer.phar /usr/local/bin/composer
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Clone and Setup the Project
+```bash
+git clone https://github.com/youngnoithanakon-ux/greenpaw-pos.git
+cd greenpaw-pos
+git checkout raspberry-pi-zero
 
-## Security Vulnerabilities
+# Install dependencies (no-dev saves disk space and RAM)
+composer install --optimize-autoloader --no-dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Environment Configuration
+```bash
+cp .env.example .env
+```
+The `.env` file is already pre-configured to use `sqlite`. 
 
-## License
+Generate the application key and create the SQLite database file:
+```bash
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --force
+php artisan db:seed --force
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 6. File Permissions
+Ensure the storage and cache directories are writable:
+```bash
+chmod -R 775 storage bootstrap/cache
+chown -R $USER:www-data storage bootstrap/cache
+```
+
+### 7. Running the Application
+For a Raspberry Pi Zero W, the most resource-efficient way to run the application is using Laravel's built-in server (or Octane if you install Swoole/FrankenPHP). 
+
+**Option A: Built-in Server (Easiest)**
+```bash
+php artisan serve --host=0.0.0.0 --port=80
+```
+*(You may need `sudo` to bind to port 80)*
+
+**Option B: Nginx + PHP-FPM (For Production Stability)**
+```bash
+sudo apt install nginx php8.4-fpm
+```
+Configure Nginx `/etc/nginx/sites-available/default` to point to `/path/to/greenpaw-pos/public` and route PHP requests to `unix:/var/run/php/php8.4-fpm.sock`.
+
+### 8. Access the POS
+Open a web browser on any device connected to the same Wi-Fi network and navigate to the Raspberry Pi's IP address:
+`http://<RASPBERRY_PI_IP>`
+
+**Default Credentials:**
+- Username: `admin`
+- Password: `password`
+
+---
+
+## 💡 Optimizations for Pi Zero W
+- **Session & Cache:** Driven by `file` to avoid Redis overhead.
+- **Client-Side QR Codes:** QR codes for receipts are generated via JavaScript in the browser (`qrcode.js`), offloading CPU work from the Pi.
+- **Native CSV Export:** Reports are generated via streaming `StreamedResponse` natively instead of using heavy Excel libraries, preventing Out-Of-Memory (OOM) crashes.

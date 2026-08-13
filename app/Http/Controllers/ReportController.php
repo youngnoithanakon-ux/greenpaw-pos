@@ -44,9 +44,12 @@ class ReportController extends Controller
         $chartValues = $chartRows->map(fn ($r) => (float) $r->daily_revenue)->toArray();
 
         // ปีที่มีข้อมูล
-        $availableYears = Sale::groupBy('y')
-            ->orderByDesc('y')
-            ->pluck(DB::raw('YEAR(sale_date) AS y'))
+        $availableYears = Sale::select('sale_date')
+            ->get()
+            ->map(fn($s) => (int) \Carbon\Carbon::parse($s->sale_date)->format('Y'))
+            ->unique()
+            ->sortDesc()
+            ->values()
             ->toArray();
 
         if (empty($availableYears)) {
