@@ -1,129 +1,62 @@
 <x-app-layout>
     <x-slot name="title">POS — GreenPaw</x-slot>
-    <style>
-        * { box-sizing: border-box; }
-        .pos-container {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 18px;
-            padding: 18px;
-            min-height: calc(100vh - 56px);
-        }
-        /* ---- Product side ---- */
-        .search-box {
-            width: 100%; padding: 13px 18px; border: 2px solid #27ae60;
-            border-radius: 10px; font-size: 1rem; outline: none; margin-bottom: 16px;
-            transition: .25s;
-        }
-        .search-box:focus { box-shadow: 0 0 0 3px rgba(39,174,96,.2); }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; }
-        .product-card {
-            background: white; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 3px 8px rgba(0,0,0,.07); display: flex; flex-direction: column;
-            transition: .2s;
-        }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,.12); }
-        .product-img-wrap { width: 100%; height: 130px; background: #f0fdf4; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .product-img-wrap .no-img { font-size: 3rem; color: #ccc; }
-        .product-info { padding: 10px; flex-grow: 1; text-align: center; }
-        .product-info strong { display: block; font-size: .9rem; color: #2c3e50; margin-bottom: 4px; min-height: 2.5em; }
-        .price-tag { color: #27ae60; font-weight: bold; font-size: 1.05rem; margin-bottom: 6px; }
-        .stock-label { font-size: .8rem; color: #666; margin-bottom: 8px; }
-        .btn-add {
-            background: #27ae60; color: white; border: none; padding: 9px;
-            width: 100%; border-radius: 7px; cursor: pointer; font-weight: bold; font-size: .85rem;
-            transition: background .2s;
-        }
-        .btn-add:hover { background: #219150; }
-        .btn-add:disabled { background: #ccc; cursor: not-allowed; }
-        .add-row { display: flex; gap: 5px; align-items: center; }
-        .qty-input {
-            width: 58px; padding: 8px 4px; text-align: center;
-            border: 1px solid #ddd; border-radius: 6px; font-size: .9rem;
-        }
 
-        /* ---- Cart side ---- */
-        .cart-panel {
-            background: white; border-radius: 12px; padding: 18px;
-            box-shadow: 0 3px 10px rgba(0,0,0,.1);
-            height: calc(100vh - 90px); position: sticky; top: 74px;
-            display: flex; flex-direction: column;
-        }
-        .seller-tag {
-            background: #f0fdf4; color: #15803d; padding: 8px 12px;
-            border-radius: 7px; text-align: center; font-size: .85rem; margin-bottom: 12px;
-        }
-        .cart-items { flex-grow: 1; overflow-y: auto; margin: 10px 0; }
-        .cart-item {
-            display: flex; justify-content: space-between;
-            padding: 9px 0; border-bottom: 1px solid #f1f1f1; font-size: .88rem;
-        }
-        .cart-empty { text-align: center; color: #999; padding: 40px 0; }
-        .cart-total {
-            border-top: 2px solid #f1f1f1; padding-top: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 1.2rem; margin-bottom: 14px;
-        }
-        .btn-checkout {
-            background: #27ae60; color: white; border: none; padding: 14px;
-            width: 100%; border-radius: 9px; font-size: 1.1rem; font-weight: bold;
-            cursor: pointer; transition: background .2s;
-        }
-        .btn-checkout:hover { background: #219150; }
-        .btn-remove { color: #e74c3c; text-decoration: none; font-size: 1.3rem; line-height: 1; }
-
-        @media (max-width: 900px) {
-            .pos-container { grid-template-columns: 1fr; }
-            .cart-panel { position: static; height: auto; order: -1; }
-        }
-        @media (max-width: 480px) {
-            .product-grid { grid-template-columns: repeat(2, 1fr); }
-            .pos-container { padding: 10px; gap: 12px; }
-        }
-    </style>
-
-    <div class="pos-container">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start" x-data="posSystem({{ $grandTotal }})">
+        
         {{-- ===== ฝั่งสินค้า ===== --}}
-        <div>
-            <h2 style="margin:0 0 12px;color:#2c3e50;">🌱 หน้าจอขายสินค้า</h2>
-            <input type="text" id="posSearch" class="search-box" placeholder="🔍 ค้นหาชื่อสินค้า..." oninput="filterProducts()">
+        <div class="lg:col-span-8 xl:col-span-9 space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <span>🌱</span> หน้าจอขายสินค้า
+                </h2>
+            </div>
+            
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                </div>
+                <input type="text" x-model="searchQuery" class="block w-full pl-10 pr-3 py-3 border-2 border-green-500 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-green-500/20 focus:border-green-500 transition sm:text-lg" placeholder="ค้นหาชื่อสินค้า...">
+            </div>
 
-            <div class="product-grid" id="productGrid">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
                 @foreach($products as $p)
                 @php $outOfStock = $p->stock_qty <= 0; @endphp
-                <div class="product-card" style="{{ $outOfStock ? 'opacity:.65;' : '' }}">
-                    <div class="product-img-wrap">
+                <div x-show="matchesSearch('{{ addslashes($p->product_name) }}')" 
+                     class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow {{ $outOfStock ? 'opacity-70 grayscale-[50%]' : '' }}">
+                    
+                    <div class="aspect-square bg-green-50 flex items-center justify-center overflow-hidden">
                         @if($p->image_path && file_exists(storage_path('app/public/products/'.$p->image_path)))
-                            <img src="{{ asset('storage/products/'.$p->image_path) }}" alt="{{ $p->product_name }}">
+                            <img src="{{ asset('storage/products/'.$p->image_path) }}" alt="{{ $p->product_name }}" class="w-full h-full object-cover">
                         @else
-                            <div class="no-img">🌱</div>
+                            <span class="text-5xl opacity-50">🌱</span>
                         @endif
                     </div>
-                    <div class="product-info">
-                        <strong>{{ $p->product_name }}</strong>
-                        <div class="price-tag">฿{{ number_format($p->sale_price, 2) }}</div>
-                        <div class="stock-label">
+                    
+                    <div class="p-3 flex flex-col flex-grow text-center">
+                        <strong class="text-sm text-gray-700 leading-tight mb-1 h-10 line-clamp-2">{{ $p->product_name }}</strong>
+                        <div class="text-green-600 font-bold text-lg mb-1">฿{{ number_format($p->sale_price, 2) }}</div>
+                        <div class="text-xs text-gray-500 mb-3">
                             @if($outOfStock)
-                                <span style="color:#e74c3c;font-weight:bold;">🚫 สินค้าหมด</span>
+                                <span class="text-red-500 font-semibold">🚫 สินค้าหมด</span>
                             @else
                                 คงเหลือ: {{ $p->stock_qty }}
                             @endif
                         </div>
-                        <form method="POST" action="{{ route('pos.add') }}">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $p->id }}">
-                            <div class="add-row">
+                        
+                        <div class="mt-auto">
+                            <form method="POST" action="{{ route('pos.add') }}" class="flex gap-2">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $p->id }}">
                                 <input type="number" name="qty" value="{{ $outOfStock ? 0 : 1 }}"
-                                    min="0.1" step="0.1" class="qty-input"
+                                    min="0.1" step="0.1" class="w-16 px-1 py-1.5 text-center border border-gray-300 rounded-lg text-sm focus:ring-green-500 focus:border-green-500"
                                     {{ $outOfStock ? 'disabled' : '' }}>
                                 @if($outOfStock)
-                                    <button type="button" class="btn-add" disabled>หมด</button>
+                                    <button type="button" class="flex-1 bg-gray-300 text-gray-500 rounded-lg text-sm font-semibold cursor-not-allowed py-1.5" disabled>หมด</button>
                                 @else
-                                    <button type="submit" class="btn-add">+ ใส่</button>
+                                    <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition py-1.5">+ ใส่</button>
                                 @endif
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -131,111 +64,121 @@
         </div>
 
         {{-- ===== ฝั่งตะกร้า ===== --}}
-        <div class="cart-panel">
-            <div class="seller-tag">ผู้ขาย: <strong>{{ auth()->user()->fullname }}</strong></div>
-            <h3 style="margin:0;font-size:1rem;color:#2c3e50;">🛒 รายการในตะกร้า</h3>
+        <div class="lg:col-span-4 xl:col-span-3 bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col lg:sticky lg:top-20" style="max-height: calc(100vh - 100px);">
+            <div class="p-4 border-b border-gray-100 bg-green-50/50 rounded-t-2xl">
+                <div class="text-xs font-semibold text-green-800 uppercase tracking-wider mb-2">ข้อมูลผู้ขาย</div>
+                <div class="flex items-center gap-2">
+                    <div class="h-8 w-8 rounded-full bg-green-200 text-green-700 flex items-center justify-center font-bold">
+                        {{ substr(auth()->user()->fullname, 0, 1) }}
+                    </div>
+                    <strong class="text-gray-700">{{ auth()->user()->fullname }}</strong>
+                </div>
+            </div>
 
-            <div class="cart-items">
-                @forelse($cart as $id => $item)
-                @php $subtotal = $item['price'] * $item['qty']; @endphp
-                <div class="cart-item">
-                    <div style="max-width:68%;">
-                        <div style="font-weight:bold;line-height:1.3;">{{ $item['name'] }}</div>
-                        <small style="color:#666;">{{ $item['qty'] }} × ฿{{ number_format($item['price'], 2) }}</small>
+            <div class="p-4 flex flex-col flex-grow overflow-hidden">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2 mb-3">
+                    <span>🛒</span> รายการในตะกร้า
+                </h3>
+
+                <div class="flex-grow overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+                    @forelse($cart as $id => $item)
+                    @php $subtotal = $item['price'] * $item['qty']; @endphp
+                    <div class="flex justify-between items-start pb-3 border-b border-gray-100 last:border-0 last:pb-0">
+                        <div class="flex-1 pr-2">
+                            <div class="font-semibold text-gray-800 text-sm leading-snug mb-1">{{ $item['name'] }}</div>
+                            <div class="text-xs text-gray-500">{{ $item['qty'] }} × ฿{{ number_format($item['price'], 2) }}</div>
+                        </div>
+                        <div class="text-right flex flex-col items-end justify-between h-full">
+                            <div class="font-bold text-gray-800 text-sm mb-1">฿{{ number_format($subtotal, 2) }}</div>
+                            <a href="{{ route('pos.remove', $id) }}" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded p-1 transition" title="ลบ">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </a>
+                        </div>
                     </div>
-                    <div style="text-align:right;">
-                        <div>฿{{ number_format($subtotal, 2) }}</div>
-                        <a href="{{ route('pos.remove', $id) }}" class="btn-remove" title="ลบ">&times;</a>
+                    @empty
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400 py-10">
+                        <div class="text-5xl mb-2 opacity-50">🛒</div>
+                        <p class="text-sm font-medium">ยังไม่มีสินค้าในตะกร้า</p>
                     </div>
+                    @endforelse
                 </div>
-                @empty
-                <div class="cart-empty">
-                    <div style="font-size:2.5rem;">🛒</div>
-                    <p>ยังไม่มีสินค้าในตะกร้า</p>
-                </div>
-                @endforelse
             </div>
 
             @if(!empty($cart))
-            <div class="cart-total">
-                <span>รวมทั้งสิ้น:</span>
-                <strong style="color:#27ae60;">฿{{ number_format($grandTotal, 2) }}</strong>
-            </div>
-
-            {{-- เงินสดที่รับ + เงินทอน --}}
-            <div style="margin-bottom:12px;">
-                <label style="font-size:.82rem;color:#555;font-weight:600;display:block;margin-bottom:5px;">💵 รับเงินมา (บาท)</label>
-                <input type="number" id="cashInput" min="0" step="1"
-                       placeholder="0.00"
-                       style="width:100%;padding:10px 12px;border:2px solid #27ae60;border-radius:8px;font-size:1.1rem;font-weight:bold;outline:none;text-align:right;"
-                       oninput="calcChange()">
-                <div id="changeDisplay" style="display:none;margin-top:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-size:.88rem;color:#374151;">เงินทอน:</span>
-                    <strong id="changeAmount" style="font-size:1.3rem;color:#15803d;">฿0.00</strong>
+            <div class="p-4 bg-gray-50 border-t border-gray-100 rounded-b-2xl">
+                <div class="flex justify-between items-end mb-4">
+                    <span class="text-gray-500 font-medium text-sm">รวมทั้งสิ้น:</span>
+                    <strong class="text-2xl text-green-600 leading-none">฿{{ number_format($grandTotal, 2) }}</strong>
                 </div>
-                <div id="shortDisplay" style="display:none;margin-top:8px;background:#fff5f5;border:1px solid #fecaca;border-radius:7px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-size:.88rem;color:#b91c1c;">ยังขาดอีก:</span>
-                    <strong id="shortAmount" style="font-size:1.3rem;color:#dc2626;">฿0.00</strong>
-                </div>
-            </div>
 
-            <form method="POST" action="{{ route('pos.checkout') }}" id="checkoutForm">
-                @csrf
-                <input type="hidden" name="received_amount" id="receivedInput" value="0">
-                <button type="button" class="btn-checkout" onclick="submitCheckout()">
-                    💰 ชำระเงิน / ปิดบิล
-                </button>
-            </form>
+                {{-- เงินสดที่รับ + เงินทอน --}}
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wide">💵 รับเงินมา (บาท)</label>
+                    <input type="number" x-model.number="cash" min="0" step="1"
+                           placeholder="0.00"
+                           class="block w-full px-4 py-3 border-2 border-green-500 rounded-xl text-xl font-bold text-right outline-none focus:ring-4 focus:ring-green-500/20 focus:border-green-600 transition shadow-inner">
+                    
+                    <div x-show="cash > 0 && change >= 0" style="display: none;" class="mt-2 bg-green-100 border border-green-200 rounded-lg p-3 flex justify-between items-center shadow-sm">
+                        <span class="text-sm font-semibold text-green-800">เงินทอน:</span>
+                        <strong class="text-xl text-green-700" x-text="'฿' + formatNumber(change)"></strong>
+                    </div>
+                    
+                    <div x-show="cash > 0 && change < 0" style="display: none;" class="mt-2 bg-red-100 border border-red-200 rounded-lg p-3 flex justify-between items-center shadow-sm">
+                        <span class="text-sm font-semibold text-red-800">ยังขาดอีก:</span>
+                        <strong class="text-xl text-red-700" x-text="'฿' + formatNumber(Math.abs(change))"></strong>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('pos.checkout') }}" id="checkoutForm" @submit.prevent="submitCheckout">
+                    @csrf
+                    <input type="hidden" name="received_amount" :value="cash">
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 text-lg">
+                        <span>💰</span> ชำระเงิน / ปิดบิล
+                    </button>
+                </form>
+            </div>
             @endif
         </div>
     </div>
 
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+    </style>
+
     <script>
-    function filterProducts() {
-        const q = document.getElementById('posSearch').value.toUpperCase();
-        document.querySelectorAll('#productGrid .product-card').forEach(card => {
-            const name = card.querySelector('strong').textContent.toUpperCase();
-            card.style.display = name.includes(q) ? '' : 'none';
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('posSystem', (total) => ({
+                searchQuery: '',
+                grandTotal: total,
+                cash: null,
+                
+                get change() {
+                    if (this.cash === null || this.cash === '') return 0;
+                    return this.cash - this.grandTotal;
+                },
+                
+                matchesSearch(name) {
+                    if (this.searchQuery === '') return true;
+                    return name.toLowerCase().includes(this.searchQuery.toLowerCase());
+                },
+                
+                formatNumber(num) {
+                    return Number(num).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+                },
+                
+                submitCheckout(e) {
+                    const c = parseFloat(this.cash) || 0;
+                    if (c > 0 && c < this.grandTotal) {
+                        const short = this.formatNumber(this.grandTotal - c);
+                        if (!confirm(`เงินยังไม่พอ ขาดอีก ฿${short}\nยืนยันปิดบิลเลยไหม?`)) return false;
+                    } else if (c === 0) {
+                        if (!confirm('ยืนยันการชำระเงินและปิดบิล?')) return false;
+                    }
+                    e.target.submit();
+                }
+            }));
         });
-    }
-
-    const grandTotal = {{ $grandTotal }};
-
-    function calcChange() {
-        const cash     = parseFloat(document.getElementById('cashInput').value) || 0;
-        const change   = cash - grandTotal;
-        const fmtTotal = grandTotal.toLocaleString('th', {minimumFractionDigits:2});
-
-        document.getElementById('receivedInput').value = cash;
-
-        const changeDiv = document.getElementById('changeDisplay');
-        const shortDiv  = document.getElementById('shortDisplay');
-
-        if (cash <= 0) {
-            changeDiv.style.display = 'none';
-            shortDiv.style.display  = 'none';
-        } else if (change >= 0) {
-            changeDiv.style.display = 'flex';
-            shortDiv.style.display  = 'none';
-            document.getElementById('changeAmount').textContent =
-                '฿' + change.toLocaleString('th', {minimumFractionDigits:2});
-        } else {
-            changeDiv.style.display = 'none';
-            shortDiv.style.display  = 'flex';
-            document.getElementById('shortAmount').textContent =
-                '฿' + Math.abs(change).toLocaleString('th', {minimumFractionDigits:2});
-        }
-    }
-
-    function submitCheckout() {
-        const cash = parseFloat(document.getElementById('cashInput').value) || 0;
-        if (cash > 0 && cash < grandTotal) {
-            const short = (grandTotal - cash).toLocaleString('th', {minimumFractionDigits:2});
-            if (!confirm(`เงินยังไม่พอ ขาดอีก ฿${short}\nยืนยันปิดบิลเลยไหม?`)) return;
-        } else if (cash === 0) {
-            if (!confirm('ยืนยันการชำระเงินและปิดบิล?')) return;
-        }
-        document.getElementById('checkoutForm').submit();
-    }
     </script>
 </x-app-layout>
