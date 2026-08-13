@@ -158,7 +158,10 @@
 
 {{-- ===== NAVBAR ===== --}}
 <nav class="navbar">
-    <a href="{{ route('home') }}" class="navbar-brand">🌿 GreenPaw</a>
+    <a href="{{ route('home') }}" class="navbar-brand">
+        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="height: 28px; width: 28px; border-radius: 4px;">
+        GreenPaw
+    </a>
 
     {{-- Desktop nav --}}
     <ul class="navbar-nav">
