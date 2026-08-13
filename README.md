@@ -36,24 +36,16 @@ sudo apt update
 sudo apt install -y php8.4-cli php8.4-sqlite3 php8.4-mbstring php8.4-xml php8.4-curl php8.4-zip unzip git
 ```
 
-### 3. Install Composer
-```bash
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php composer-setup.php
-sudo mv composer.phar /usr/local/bin/composer
-```
-
-### 4. Clone and Setup the Project
+### 3. Clone and Setup the Project
 ```bash
 git clone https://github.com/youngnoithanakon-ux/greenpaw-pos.git
 cd greenpaw-pos
 git checkout raspberry-pi-zero
 
-# Install dependencies (no-dev saves disk space and RAM)
-composer install --optimize-autoloader --no-dev
+# Note: The vendor directory is pre-included in this branch. No composer install is needed!
 ```
 
-### 5. Environment Configuration
+### 4. Environment Configuration
 ```bash
 cp .env.example .env
 ```
@@ -67,14 +59,14 @@ php artisan migrate --force
 php artisan db:seed --force
 ```
 
-### 6. File Permissions
+### 5. File Permissions
 Ensure the storage and cache directories are writable:
 ```bash
 chmod -R 775 storage bootstrap/cache
 chown -R $USER:www-data storage bootstrap/cache
 ```
 
-### 7. Running the Application
+### 6. Running the Application
 For a Raspberry Pi Zero W, the most resource-efficient way to run the application is using Laravel's built-in server (or Octane if you install Swoole/FrankenPHP). 
 
 **Option A: Built-in Server (Easiest)**
@@ -89,7 +81,7 @@ sudo apt install nginx php8.4-fpm
 ```
 Configure Nginx `/etc/nginx/sites-available/default` to point to `/path/to/greenpaw-pos/public` and route PHP requests to `unix:/var/run/php/php8.4-fpm.sock`.
 
-### 8. Access the POS
+### 7. Access the POS
 Open a web browser on any device connected to the same Wi-Fi network and navigate to the Raspberry Pi's IP address:
 `http://<RASPBERRY_PI_IP>`
 
