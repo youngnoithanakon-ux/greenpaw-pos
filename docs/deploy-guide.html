@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenPaw Systems — คู่มือการ Deploy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; color: #222; background: #fff; font-size: 13px; line-height: 1.6; }
+  .page { max-width: 800px; margin: 0 auto; padding: 40px 48px; }
+
+  /* Cover */
+  .cover { text-align: center; padding: 80px 0 60px; border-bottom: 3px solid #27ae60; margin-bottom: 40px; }
+  .cover .logo { font-size: 52px; margin-bottom: 16px; }
+  .cover h1 { font-size: 28px; color: #1a5e2e; margin-bottom: 8px; }
+  .cover h2 { font-size: 16px; color: #555; font-weight: normal; margin-bottom: 24px; }
+  .cover .meta { display: inline-block; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 24px; color: #166534; font-size: 12px; line-height: 2; }
+
+  /* Sections */
+  h3 { font-size: 15px; color: #1a5e2e; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #d1fae5; }
+  h4 { font-size: 13px; color: #374151; margin: 16px 0 6px; }
+  p { margin-bottom: 8px; color: #374151; }
+
+  /* Steps */
+  .step-box { background: #f0fdf4; border-left: 4px solid #27ae60; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 14px; }
+  .step-box .step-title { font-weight: bold; color: #166534; font-size: 13px; margin-bottom: 6px; }
+  .step-num { display: inline-block; background: #27ae60; color: white; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-weight: bold; margin-right: 8px; font-size: 12px; }
+
+  /* Code blocks */
+  pre { background: #1e293b; color: #e2e8f0; padding: 14px 18px; border-radius: 8px; font-family: 'Consolas','Courier New',monospace; font-size: 11.5px; overflow-x: auto; margin: 8px 0 14px; line-height: 1.8; }
+  code { background: #f1f5f9; color: #dc2626; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas','Courier New',monospace; font-size: 11.5px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 12px; }
+  th { background: #1a5e2e; color: white; padding: 9px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }
+  tr:nth-child(even) td { background: #f9fafb; }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 7px 10px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; gap: 10px; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box { width: 16px; height: 16px; border: 2px solid #27ae60; border-radius: 3px; flex-shrink: 0; }
+
+  /* Alerts */
+  .alert { padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 12px; }
+  .alert-warn  { background: #fffbeb; border-left: 4px solid #f59e0b; color: #92400e; }
+  .alert-info  { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+  .alert-danger{ background: #fff1f2; border-left: 4px solid #e74c3c; color: #991b1b; }
+
+  /* Print */
+  @media print {
+    .page { padding: 20px 28px; max-width: 100%; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    pre { font-size: 10.5px; }
+    body { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Print button -->
+<div class="no-print" style="position:fixed;top:18px;right:24px;">
+  <button onclick="window.print()" style="background:#27ae60;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.2);">
+    🖨️ พิมพ์ / บันทึก PDF
+  </button>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="logo">🌿</div>
+  <h1>GreenPaw Systems</h1>
+  <h2>คู่มือการ Deploy ระบบขึ้น Production Server</h2>
+  <div class="meta">
+    Framework: Laravel 11 &nbsp;|&nbsp; PHP 8.3+ &nbsp;|&nbsp; MySQL 8.x<br>
+    เวอร์ชัน: 1.0 &nbsp;|&nbsp; วันที่จัดทำ: กรกฎาคม 2026
+  </div>
+</div>
+
+<!-- REQUIREMENTS -->
+<h3>📋 ข้อกำหนดของ Server (System Requirements)</h3>
+<table>
+  <thead><tr><th>Component</th><th>Version</th><th>หมายเหตุ</th></tr></thead>
+  <tbody>
+    <tr><td><strong>PHP</strong></td><td>8.3 ขึ้นไป</td><td>Extensions: pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath, fileinfo</td></tr>
+    <tr><td><strong>MySQL</strong></td><td>5.7 / 8.x</td><td>Database: greenpaw_db</td></tr>
+    <tr><td><strong>Composer</strong></td><td>2.x</td><td>PHP package manager</td></tr>
+    <tr><td><strong>Web Server</strong></td><td>Apache / Nginx</td><td>Document root ต้องชี้ที่ <code>public/</code></td></tr>
+    <tr><td><strong>Node.js</strong></td><td>18+</td><td>ใช้เฉพาะ build assets (ไม่ต้องติดบน server ถ้า build ที่ local)</td></tr>
+  </tbody>
+</table>
+
+<div class="alert alert-warn">
+  ⚠️ <strong>สำคัญ:</strong> Document Root ของ Web Server ต้องชี้ไปที่โฟลเดอร์ <code>public/</code> เท่านั้น ห้ามชี้ที่ root โปรเจกต์โดยตรงเพราะจะ expose ไฟล์ .env และ config ออกสู่ internet
+</div>
+
+
+<!-- STEPS -->
+<h3>🚀 ขั้นตอนการ Deploy (Step by Step)</h3>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">1</span>Build Assets ที่เครื่อง Local ก่อน</div>
+  <p>รันคำสั่งนี้ที่เครื่อง local เพื่อสร้างไฟล์ CSS/JS สำหรับ production:</p>
+  <pre>npm install
+npm run build</pre>
+  <p>จะได้โฟลเดอร์ <code>public/build/</code> — ต้องอัพโหลดขึ้น server ด้วย</p>
+</div>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">2</span>อัพโหลดไฟล์ขึ้น Server</div>
+  <p>อัพโหลดทุกไฟล์ <strong>ยกเว้น</strong> โฟลเดอร์และไฟล์เหล่านี้:</p>
+  <pre>node_modules/     ← ใหญ่มาก ไม่จำเป็น
+.env              ← ห้ามอัพ (ข้อมูล sensitive)
+storage/logs/     ← ไม่จำเป็น</pre>
+  <p>โครงสร้างบน server ที่แนะนำ:</p>
+  <pre>/var/www/greenpaw/          ← root โปรเจกต์ (ห้าม expose)
+    app/
+    bootstrap/
+    config/
+    database/
+    public/                 ← Document Root ของ web server
+        build/              ← ไฟล์จาก npm run build
+        index.php
+        .htaccess
+    resources/
+    routes/
+    storage/
+    vendor/
+    .env                    ← สร้างใหม่บน server</pre>
+</div>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">3</span>ติดตั้ง PHP Dependencies บน Server</div>
+  <pre>cd /var/www/greenpaw
+composer install --optimize-autoloader --no-dev</pre>
+  <p><code>--no-dev</code> ตัด package สำหรับ testing ออก ลดขนาดและเพิ่มความปลอดภัย</p>
+</div>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">4</span>สร้างและตั้งค่าไฟล์ .env</div>
+  <p>สร้างไฟล์ <code>.env</code> บน server โดย copy จาก <code>.env.example</code> แล้วแก้ค่าดังนี้:</p>
+  <pre>APP_NAME="GreenPaw Systems"
+APP_ENV=production
+APP_KEY=                         # ← สร้างด้วยคำสั่งด้านล่าง
+APP_DEBUG=false                  # ← ต้องเป็น false เสมอ
+APP_URL=https://yourdomain.com   # ← domain จริงของคุณ
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=greenpaw_db
+DB_USERNAME=db_username
+DB_PASSWORD=db_password
+
+SESSION_DRIVER=file
+CACHE_STORE=file
+FILESYSTEM_DISK=local
+APP_TIMEZONE=Asia/Bangkok</pre>
+  <p>จากนั้นสร้าง APP_KEY:</p>
+  <pre>php artisan key:generate</pre>
+</div>
+
+<div class="alert alert-danger">
+  🔴 <strong>ห้ามลืม:</strong> <code>APP_DEBUG=false</code> บน production เด็ดขาด หากเปิดไว้จะ expose ข้อมูล database, config, และ stack trace ให้ผู้ใช้ทั่วไปเห็นได้
+</div>
+
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">5</span>ตั้งค่า Database</div>
+  <h4>กรณี Server ใหม่ (DB ว่าง)</h4>
+  <pre>php artisan migrate --force
+php artisan db:seed --force</pre>
+  <h4>กรณีใช้ DB เดิมจาก Vanilla PHP (greenpaw_db เดิม)</h4>
+  <pre># ตรวจสอบ tables ครบก่อน แล้วรัน seed เพื่อสร้าง admin account
+php artisan db:seed --force</pre>
+  <p>รีเซ็ต password admin ให้ตรงกับที่ต้องการ:</p>
+  <pre>php artisan tinker
+&gt;&gt;&gt; App\Models\User::where('username','admin')-&gt;update(['password'=&gt;bcrypt('YOUR_PASSWORD')])
+&gt;&gt;&gt; exit</pre>
+</div>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">6</span>สร้าง Storage Symlink</div>
+  <p>ทำให้รูปสินค้าที่ upload เข้าถึงได้จาก URL:</p>
+  <pre>php artisan storage:link</pre>
+  <p>จะสร้าง <code>public/storage</code> → <code>storage/app/public</code></p>
+</div>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">7</span>ตั้งค่า Permissions (Linux)</h4>
+  <pre>chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache</pre>
+  <div class="alert alert-info" style="margin-top:8px;">
+    ℹ️ บน shared hosting หรือ cPanel ให้ตั้ง permission folder <code>storage/</code> และ <code>bootstrap/cache/</code> เป็น <strong>755</strong> ผ่าน File Manager
+  </div>
+</div>
+
+<div class="step-box">
+  <div class="step-title"><span class="step-num">8</span>Optimize สำหรับ Production</div>
+  <p>รันคำสั่งเดียวเพื่อ cache ทุกอย่าง:</p>
+  <pre>php artisan optimize</pre>
+  <p>คำสั่งนี้จะรวม: config:cache + route:cache + view:cache + event:cache</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- WEB SERVER CONFIG -->
+<h3>⚙️ ตั้งค่า Web Server</h3>
+
+<h4>Apache (.htaccess พร้อมใช้แล้วใน public/)</h4>
+<p>ต้องเปิด <code>mod_rewrite</code> และตั้ง VirtualHost:</p>
+<pre>&lt;VirtualHost *:80&gt;
+    ServerName yourdomain.com
+    DocumentRoot /var/www/greenpaw/public
+
+    &lt;Directory /var/www/greenpaw/public&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+<h4>Nginx</h4>
+<pre>server {
+    listen 80;
+    server_name yourdomain.com;
+    root /var/www/greenpaw/public;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}</pre>
+
+
+<!-- CHECKLIST -->
+<h3>✅ Checklist ก่อน Go-Live</h3>
+<div style="background:white;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
+  <ul class="checklist">
+    <li><div class="check-box"></div> APP_DEBUG=false ใน .env</li>
+    <li><div class="check-box"></div> APP_ENV=production ใน .env</li>
+    <li><div class="check-box"></div> APP_KEY ถูก generate แล้ว</li>
+    <li><div class="check-box"></div> DB_DATABASE, DB_USERNAME, DB_PASSWORD ถูกต้อง</li>
+    <li><div class="check-box"></div> php artisan migrate รันสำเร็จ</li>
+    <li><div class="check-box"></div> php artisan db:seed รันสำเร็จ (มี admin account)</li>
+    <li><div class="check-box"></div> php artisan storage:link รันแล้ว</li>
+    <li><div class="check-box"></div> Permissions storage/ และ bootstrap/cache/ ถูกต้อง</li>
+    <li><div class="check-box"></div> php artisan optimize รันแล้ว</li>
+    <li><div class="check-box"></div> Document Root ชี้ที่ public/ ถูกต้อง</li>
+    <li><div class="check-box"></div> HTTPS ตั้งค่าแล้ว (แนะนำ Let's Encrypt)</li>
+    <li><div class="check-box"></div> ทดสอบ login ด้วย admin และ staff</li>
+    <li><div class="check-box"></div> ทดสอบ upload รูปสินค้า</li>
+    <li><div class="check-box"></div> ทดสอบ POS checkout</li>
+    <li><div class="check-box"></div> ทดสอบว่า Staff เข้า /admin/* ไม่ได้ (403)</li>
+  </ul>
+</div>
+
+<!-- TROUBLESHOOTING -->
+<h3>🔧 แก้ปัญหาที่พบบ่อย</h3>
+<table>
+  <thead><tr><th>ปัญหา</th><th>สาเหตุ</th><th>วิธีแก้</th></tr></thead>
+  <tbody>
+    <tr><td>หน้าขาว / 500 Error</td><td>APP_KEY ว่าง หรือ permissions ผิด</td><td>รัน <code>php artisan key:generate</code> และตรวจ storage permissions</td></tr>
+    <tr><td>รูปสินค้าไม่แสดง</td><td>ยังไม่ได้รัน storage:link</td><td>รัน <code>php artisan storage:link</code></td></tr>
+    <tr><td>404 ทุกหน้ายกเว้น /</td><td>mod_rewrite ปิดอยู่ หรือ AllowOverride None</td><td>เปิด mod_rewrite และตั้ง AllowOverride All</td></tr>
+    <tr><td>DB Connection failed</td><td>.env ค่า DB ผิด</td><td>ตรวจสอบ DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD</td></tr>
+    <tr><td>Login ไม่ได้</td><td>Password hash ไม่ตรง</td><td>รัน tinker เพื่อ reset password ด้วย bcrypt()</td></tr>
+    <tr><td>CSS/JS ไม่โหลด</td><td>ลืม npm run build</td><td>รัน <code>npm run build</code> แล้วอัพโหลด public/build/ ใหม่</td></tr>
+  </tbody>
+</table>
+
+<div style="margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;text-align:center;color:#9ca3af;font-size:11px;">
+  GreenPaw Systems — Deploy Guide v1.0 | จัดทำโดย Kiro AI | กรกฎาคม 2026
+</div>
+
+</div><!-- end .page -->
+</body>
+</html>

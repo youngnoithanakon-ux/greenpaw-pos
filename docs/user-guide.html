@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenPaw Systems — คู่มือการใช้งาน</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; color: #222; background: #fff; font-size: 13px; line-height: 1.7; }
+  .page { max-width: 800px; margin: 0 auto; padding: 40px 48px; }
+
+  .cover { text-align: center; padding: 70px 0 50px; border-bottom: 3px solid #27ae60; margin-bottom: 36px; }
+  .cover .logo { font-size: 52px; margin-bottom: 14px; }
+  .cover h1 { font-size: 28px; color: #1a5e2e; margin-bottom: 8px; }
+  .cover h2 { font-size: 15px; color: #555; font-weight: normal; margin-bottom: 24px; }
+  .cover .meta { display: inline-block; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 28px; color: #166534; font-size: 12px; line-height: 2.2; }
+
+  .toc { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-bottom: 32px; }
+  .toc h3 { color: #374151; font-size: 13px; margin-bottom: 12px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { padding: 3px 0; color: #4b5563; }
+
+  h3 { font-size: 15px; color: #1a5e2e; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #d1fae5; }
+  h4 { font-size: 13px; color: #1f2937; margin: 18px 0 8px; font-weight: bold; }
+  p { margin-bottom: 8px; color: #374151; }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; color: #374151; }
+  li { margin-bottom: 4px; }
+
+  .role-tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; vertical-align: middle; margin-left: 6px; }
+  .role-admin { background: #fee2e2; color: #991b1b; }
+  .role-staff { background: #dbeafe; color: #1e40af; }
+  .role-both  { background: #dcfce7; color: #166534; }
+
+  .step-flow { display: flex; gap: 0; margin: 14px 0; flex-wrap: wrap; }
+  .step-flow .sf { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px 16px; font-size: 12px; text-align: center; flex: 1; min-width: 100px; position: relative; }
+  .step-flow .sf:not(:last-child)::after { content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: #27ae60; font-size: 16px; font-weight: bold; z-index: 1; }
+  .step-flow .sf .icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+  .info-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 12px; color: #1e40af; }
+  .warn-box  { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 12px; color: #92400e; }
+  .tip-box   { background: #f0fdf4; border-left: 4px solid #27ae60; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 12px; color: #166534; }
+
+  .screen-box { border: 2px solid #e5e7eb; border-radius: 10px; padding: 18px 20px; margin: 12px 0; background: #fafafa; }
+  .screen-box .screen-title { font-weight: bold; color: #374151; margin-bottom: 10px; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+  .field-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+  .field-label { width: 140px; color: #6b7280; flex-shrink: 0; }
+  .field-input { flex: 1; background: white; border: 1px solid #d1d5db; border-radius: 5px; padding: 6px 10px; color: #374151; }
+
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 16px; font-size: 12px; }
+  th { background: #1a5e2e; color: white; padding: 9px 12px; text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #f9fafb; }
+
+  .page-break { page-break-before: always; }
+
+  @media print {
+    .page { padding: 20px 28px; max-width: 100%; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    body { font-size: 11.5px; }
+    h3 { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="no-print" style="position:fixed;top:18px;right:24px;">
+  <button onclick="window.print()" style="background:#27ae60;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,.2);">
+    🖨️ พิมพ์ / บันทึก PDF
+  </button>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="logo">🌿</div>
+  <h1>GreenPaw Systems</h1>
+  <h2>คู่มือการใช้งานระบบ POS และจัดการร้านค้า</h2>
+  <div class="meta">
+    สำหรับ: Admin และ Staff &nbsp;|&nbsp; เวอร์ชัน 1.0<br>
+    วันที่จัดทำ: กรกฎาคม 2026
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>📑 สารบัญ</h3>
+  <ol>
+    <li>สิทธิ์การใช้งาน (Role)</li>
+    <li>การเข้าสู่ระบบ (Login)</li>
+    <li>หน้าหลัก (Home)</li>
+    <li>ระบบขายหน้าร้าน (POS)</li>
+    <li>Dashboard ภาพรวมยอดขาย</li>
+    <li>จัดการสินค้า (Admin)</li>
+    <li>จัดการหมวดหมู่ (Admin)</li>
+    <li>จัดการสต็อก (Admin)</li>
+    <li>ประวัติการขาย & ยกเลิกบิล (Admin)</li>
+    <li>รายงานกำไร (Admin)</li>
+    <li>จัดการพนักงาน (Admin)</li>
+    <li>ตั้งค่าโปรไฟล์</li>
+  </ol>
+</div>
+
+<!-- ROLES -->
+<h3>1. สิทธิ์การใช้งาน (Role)</h3>
+<table>
+  <thead><tr><th>สิทธิ์</th><th>หน้าที่เข้าถึงได้</th><th>ข้อจำกัด</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Admin</strong> <span class="role-tag role-admin">ADMIN</span></td>
+      <td>ทุกหน้าในระบบ (POS, Dashboard, สินค้า, สต็อก, บิล, รายงาน, พนักงาน)</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><strong>Staff</strong> <span class="role-tag role-staff">STAFF</span></td>
+      <td>POS (ขายสินค้า), Dashboard (ดูยอดขาย), โปรไฟล์</td>
+      <td>เข้า /admin/* ไม่ได้ จะได้รับ Error 403</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- LOGIN -->
+<h3>2. การเข้าสู่ระบบ (Login)</h3>
+<p>เปิด browser แล้วไปที่ URL ของระบบ จะเข้าสู่หน้า Login อัตโนมัติ</p>
+
+<div class="screen-box">
+  <div class="screen-title">🔐 หน้า Login</div>
+  <div class="field-row"><div class="field-label">ชื่อผู้ใช้ (Username)</div><div class="field-input">admin</div></div>
+  <div class="field-row"><div class="field-label">รหัสผ่าน (Password)</div><div class="field-input">••••••••</div></div>
+</div>
+
+<div class="info-box">ℹ️ บัญชีเริ่มต้น: username = <strong>admin</strong> / password = <strong>password</strong> (แนะนำให้เปลี่ยนทันทีหลัง login ครั้งแรก)</div>
+<div class="tip-box">💡 ติ๊ก "จดจำฉัน" เพื่อให้ระบบจำ session ไว้นานขึ้น ไม่ต้อง login ใหม่ทุกครั้ง</div>
+
+
+<!-- HOME -->
+<h3>3. หน้าหลัก (Home) <span class="role-tag role-both">ทุกคน</span></h3>
+<p>หลัง login จะเข้าสู่หน้าหลัก แสดงเมนูตามสิทธิ์ของแต่ละ role</p>
+<ul>
+  <li>🛒 <strong>งานขาย (POS)</strong> — เปิดหน้าจอขายสินค้า</li>
+  <li>📊 <strong>สรุปภาพรวม</strong> — Dashboard ยอดขายวันนี้</li>
+  <li>⚠️ <strong>แจ้งเตือนสต็อกใกล้หมด</strong> — แสดงสินค้าที่เหลือน้อยกว่า 5 ชิ้น (ถ้ามี)</li>
+</ul>
+
+<!-- POS -->
+<h3>4. ระบบขายหน้าร้าน (POS) <span class="role-tag role-both">ทุกคน</span></h3>
+
+<div class="step-flow">
+  <div class="sf"><span class="icon">🔍</span>ค้นหาสินค้า</div>
+  <div class="sf"><span class="icon">➕</span>ใส่จำนวน & เพิ่มลงตะกร้า</div>
+  <div class="sf"><span class="icon">🛒</span>ตรวจสอบตะกร้า</div>
+  <div class="sf"><span class="icon">💰</span>ชำระเงิน / ปิดบิล</div>
+</div>
+
+<h4>วิธีใช้งาน</h4>
+<ol>
+  <li>พิมพ์ชื่อสินค้าในช่อง <strong>"ค้นหา"</strong> ด้านบนเพื่อกรองสินค้า</li>
+  <li>ใส่จำนวนในช่องตัวเลขหน้าสินค้า (default = 1) รองรับทศนิยม เช่น 0.5 กก.</li>
+  <li>กดปุ่ม <strong>"+ ใส่"</strong> เพื่อเพิ่มสินค้าลงตะกร้าด้านขวา</li>
+  <li>ตรวจสอบรายการในตะกร้า — กด <strong>✕</strong> เพื่อลบรายการที่ไม่ต้องการ</li>
+  <li>กดปุ่ม <strong>"💰 ชำระเงิน / ปิดบิล"</strong> เพื่อยืนยันการขาย</li>
+</ol>
+
+<div class="warn-box">⚠️ สินค้าที่ขึ้นว่า <strong>"🚫 สินค้าหมด"</strong> ไม่สามารถเพิ่มลงตะกร้าได้ ต้องเติมสต็อกก่อน (Admin เท่านั้น)</div>
+<div class="tip-box">💡 ระบบจะตัดสต็อกและบันทึก StockLog อัตโนมัติทุกครั้งที่ปิดบิล</div>
+
+<!-- DASHBOARD -->
+<h3>5. Dashboard ภาพรวมยอดขาย <span class="role-tag role-both">ทุกคน</span></h3>
+<p>แสดงสรุปผลการขายของวันปัจจุบัน</p>
+<table>
+  <thead><tr><th>ข้อมูลที่แสดง</th><th>รายละเอียด</th><th>มองเห็น</th></tr></thead>
+  <tbody>
+    <tr><td>จำนวนบิลวันนี้</td><td>นับเฉพาะบิล normal (ไม่รวม void)</td><td><span class="role-tag role-both">ทุกคน</span></td></tr>
+    <tr><td>ยอดขายรวมวันนี้</td><td>รวมทุกบิลปกติ</td><td><span class="role-tag role-both">ทุกคน</span></td></tr>
+    <tr><td>ค่าฝากขาย</td><td>ยอดที่หักให้ร้านที่รับฝาก</td><td><span class="role-tag role-admin">Admin</span></td></tr>
+    <tr><td>กำไรสุทธิ</td><td>ยอดขาย − ต้นทุน − ค่าฝาก</td><td><span class="role-tag role-admin">Admin</span></td></tr>
+    <tr><td>กราฟ 7 วันย้อนหลัง</td><td>เส้นกราฟยอดขายรายวัน</td><td><span class="role-tag role-both">ทุกคน</span></td></tr>
+    <tr><td>สต็อกใกล้หมด</td><td>สินค้าที่เหลือ ≤ 5 ชิ้น</td><td><span class="role-tag role-both">ทุกคน</span></td></tr>
+    <tr><td>5 อันดับขายดี</td><td>สินค้าที่ขายได้มากที่สุดตลอดกาล</td><td><span class="role-tag role-both">ทุกคน</span></td></tr>
+  </tbody>
+</table>
+
+
+<div class="page-break"></div>
+
+<!-- PRODUCTS -->
+<h3>6. จัดการสินค้า <span class="role-tag role-admin">Admin</span></h3>
+<p>เมนู: <strong>🌱 สินค้า</strong> → แสดงรายการสินค้าทั้งหมด</p>
+
+<h4>เพิ่มสินค้าใหม่</h4>
+<ol>
+  <li>กดปุ่ม <strong>"➕ เพิ่มสินค้าใหม่"</strong> มุมบนขวา</li>
+  <li>อัพโหลดรูปภาพ (ไม่บังคับ) — รองรับ jpg, jpeg, png, webp ขนาดไม่เกิน 2MB</li>
+  <li>กรอกชื่อสินค้าและเลือกหมวดหมู่</li>
+  <li>เลือกประเภท:
+    <ul>
+      <li><strong>🌱 สินค้าผลิตเอง</strong> — ใส่ต้นทุนย่อย (เมล็ด, ดิน, กระถาง, ค่าแรง, waste%) ระบบคำนวณต้นทุนให้อัตโนมัติ</li>
+      <li><strong>📦 สินค้าซื้อมาขายไป</strong> — ใส่ราคาทุนที่ซื้อมาตรงๆ</li>
+    </ul>
+  </li>
+  <li>ใส่ค่าฝากขาย (ถ้ามี) และราคาขาย</li>
+  <li>กด <strong>"✅ สร้างรายการสินค้า"</strong></li>
+</ol>
+
+<div class="info-box">ℹ️ สต็อกเริ่มต้น = 0 เสมอ ต้องเติมสต็อกแยกต่างหากที่เมนู <strong>📥 สต็อก</strong></div>
+
+<h4>แก้ไข / ลบสินค้า</h4>
+<ul>
+  <li>กด <strong>"แก้ไข"</strong> เพื่อแก้ไขข้อมูลสินค้า (รูปภาพจะอัพเดตเฉพาะเมื่ออัพโหลดใหม่)</li>
+  <li>กด <strong>"ลบ"</strong> เพื่อลบสินค้าออกจากระบบ (รูปภาพจะถูกลบด้วย)</li>
+  <li>ปิดสถานะเป็น <strong>Inactive</strong> เพื่อซ่อนจาก POS โดยไม่ต้องลบข้อมูล</li>
+</ul>
+
+<!-- CATEGORIES -->
+<h3>7. จัดการหมวดหมู่ <span class="role-tag role-admin">Admin</span></h3>
+<p>เมนู: <strong>🌱 สินค้า</strong> → ลิงก์ "จัดการหมวดหมู่" หรือตรงไปที่ <strong>/admin/categories</strong></p>
+<ul>
+  <li>พิมพ์ชื่อหมวดหมู่ในช่องด้านบน กด <strong>"➕ เพิ่มหมวดหมู่"</strong></li>
+  <li>กด <strong>"ลบ"</strong> เพื่อลบหมวดหมู่ (ไม่กระทบสินค้าที่อยู่ในหมวดนั้น)</li>
+</ul>
+
+<!-- STOCK -->
+<h3>8. จัดการสต็อก <span class="role-tag role-admin">Admin</span></h3>
+<p>เมนู: <strong>📥 สต็อก</strong></p>
+
+<h4>เติมสต็อก</h4>
+<ol>
+  <li>ค้นหาสินค้าที่ต้องการในช่องค้นหา</li>
+  <li>ใส่จำนวนที่ต้องการเพิ่มในช่อง (รองรับทศนิยม)</li>
+  <li>กด <strong>"+ เพิ่มเข้าคลัง"</strong></li>
+  <li>ระบบจะบันทึก StockLog โดยอัตโนมัติ</li>
+</ol>
+<div class="info-box">ℹ️ สินค้าที่มีสถานะ "เลิกจำหน่าย" ไม่สามารถเติมสต็อกได้</div>
+
+<h4>ดูประวัติสต็อก</h4>
+<p>กดปุ่ม <strong>"📜 ดูประวัติสต็อก"</strong> มุมบนขวา — แสดงประวัติทุกการเคลื่อนไหวของสต็อก 200 รายการล่าสุด ทั้งรับเข้า (+) และจ่ายออก (−)</p>
+
+<!-- SALES -->
+<h3>9. ประวัติการขาย & ยกเลิกบิล <span class="role-tag role-admin">Admin</span></h3>
+<p>เมนู: <strong>📝 ประวัติขาย</strong></p>
+
+<h4>ค้นหาบิล</h4>
+<ul>
+  <li>เลือกช่วงวันที่ "ตั้งแต่วันที่" ถึง "ถึงวันที่" แล้วกด <strong>"🔍 ค้นหา"</strong></li>
+  <li>Default แสดงบิลของวันนี้</li>
+</ul>
+
+<h4>ดูรายละเอียดในบิล</h4>
+<p>กดปุ่ม <strong>"👁️ รายการ"</strong> เพื่อดู popup แสดงสินค้าทุกรายการในบิลนั้น</p>
+
+<h4>ยกเลิกบิล (Void)</h4>
+<ol>
+  <li>กดปุ่ม <strong>"🚫 Void"</strong> ท้ายแถวบิลที่ต้องการยกเลิก</li>
+  <li>ระบบจะถามยืนยัน — กด OK</li>
+  <li>บิลจะถูกทำเครื่องหมาย <strong>"ยกเลิกแล้ว"</strong> และสต็อกสินค้าจะถูกคืนเข้าคลังอัตโนมัติ</li>
+</ol>
+<div class="warn-box">⚠️ บิลที่ void แล้วไม่สามารถ void ซ้ำได้ และไม่ถูกนับในยอดรายงาน</div>
+
+
+<!-- REPORTS -->
+<h3>10. รายงานกำไร <span class="role-tag role-admin">Admin</span></h3>
+<p>เมนู: <strong>📈 รายงาน</strong></p>
+<ol>
+  <li>เลือก <strong>เดือน</strong> และ <strong>ปี</strong> ที่ต้องการ กด <strong>"🔍 ดูข้อมูล"</strong></li>
+  <li>ระบบแสดงสรุป 5 ตัวเลข: รายรับรวม, ค่าฝากขาย, รายรับสุทธิ, ต้นทุน, กำไรสุทธิ</li>
+  <li>กราฟเส้นแสดงยอดขายรายวันตลอดเดือน</li>
+  <li>กด <strong>"🖨️ พิมพ์รายงาน"</strong> เพื่อ print หรือบันทึกเป็น PDF</li>
+</ol>
+<div class="info-box">ℹ️ ตัวเลขทั้งหมดหักบิลที่ Void ออกแล้ว</div>
+
+<!-- USERS -->
+<h3>11. จัดการพนักงาน <span class="role-tag role-admin">Admin</span></h3>
+<p>เมนู: <strong>👥 พนักงาน</strong></p>
+
+<h4>เพิ่มพนักงานใหม่</h4>
+<ol>
+  <li>กรอก Username, ชื่อ-นามสกุล, รหัสผ่าน</li>
+  <li>เลือกสิทธิ์: <strong>Staff</strong> (ขายได้อย่างเดียว) หรือ <strong>Admin</strong> (จัดการระบบได้)</li>
+  <li>กด <strong>"✅ สร้างบัญชีผู้ใช้"</strong></li>
+</ol>
+
+<h4>แก้ไขข้อมูลพนักงาน</h4>
+<ul>
+  <li>กด <strong>"แก้ไข"</strong> ท้ายแถว — แก้ได้ทั้งชื่อ, สิทธิ์ และรหัสผ่าน</li>
+  <li><strong>เว้นว่างช่องรหัสผ่าน</strong> หากไม่ต้องการเปลี่ยน</li>
+</ul>
+
+<h4>ลบพนักงาน</h4>
+<ul>
+  <li>กด <strong>"ลบ"</strong> ท้ายแถว — ไม่สามารถลบบัญชีของตัวเองได้</li>
+</ul>
+
+<!-- PROFILE -->
+<h3>12. ตั้งค่าโปรไฟล์ <span class="role-tag role-both">ทุกคน</span></h3>
+<p>คลิกชื่อผู้ใช้ที่ navbar มุมขวาบน → <strong>"⚙️ ตั้งค่าโปรไฟล์"</strong></p>
+<table>
+  <thead><tr><th>ส่วน</th><th>ทำอะไรได้</th></tr></thead>
+  <tbody>
+    <tr><td>ข้อมูลโปรไฟล์</td><td>แก้ไข Username และ ชื่อ-นามสกุล</td></tr>
+    <tr><td>เปลี่ยนรหัสผ่าน</td><td>ใส่รหัสผ่านปัจจุบัน + รหัสผ่านใหม่ + ยืนยัน</td></tr>
+    <tr><td>ลบบัญชี</td><td>ลบบัญชีตัวเองออกจากระบบถาวร (ยืนยันด้วยรหัสผ่าน)</td></tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- QUICK REF -->
+<h3>📌 Quick Reference — เมนูและสิทธิ์</h3>
+<table>
+  <thead><tr><th>เมนู</th><th>URL</th><th>Admin</th><th>Staff</th></tr></thead>
+  <tbody>
+    <tr><td>🛒 POS</td><td>/pos</td><td>✅</td><td>✅</td></tr>
+    <tr><td>📊 Dashboard</td><td>/dashboard</td><td>✅</td><td>✅</td></tr>
+    <tr><td>🌱 สินค้า</td><td>/admin/products</td><td>✅</td><td>❌</td></tr>
+    <tr><td>📁 หมวดหมู่</td><td>/admin/categories</td><td>✅</td><td>❌</td></tr>
+    <tr><td>📥 สต็อก</td><td>/admin/stock</td><td>✅</td><td>❌</td></tr>
+    <tr><td>📜 ประวัติสต็อก</td><td>/admin/stock/log</td><td>✅</td><td>❌</td></tr>
+    <tr><td>📝 ประวัติขาย</td><td>/admin/sales</td><td>✅</td><td>❌</td></tr>
+    <tr><td>📈 รายงาน</td><td>/admin/reports</td><td>✅</td><td>❌</td></tr>
+    <tr><td>👥 พนักงาน</td><td>/admin/users</td><td>✅</td><td>❌</td></tr>
+    <tr><td>⚙️ โปรไฟล์</td><td>/profile</td><td>✅</td><td>✅</td></tr>
+  </tbody>
+</table>
+
+<h3>❓ คำถามที่พบบ่อย (FAQ)</h3>
+<table>
+  <thead><tr><th>คำถาม</th><th>คำตอบ</th></tr></thead>
+  <tbody>
+    <tr><td>ลืมรหัสผ่านทำอย่างไร?</td><td>ให้ Admin รีเซ็ตรหัสผ่านให้ผ่านเมนู <strong>👥 พนักงาน → แก้ไข</strong></td></tr>
+    <tr><td>สินค้าขึ้น "สินค้าหมด" บน POS</td><td>Admin เติมสต็อกที่เมนู <strong>📥 สต็อก</strong></td></tr>
+    <tr><td>ต้องการแก้บิลที่ขายผิด</td><td>ใช้ฟังก์ชัน <strong>Void</strong> ที่เมนูประวัติขาย แล้วขายใหม่</td></tr>
+    <tr><td>รูปสินค้าไม่แสดง</td><td>แจ้ง Admin ตรวจสอบว่ารัน <code>php artisan storage:link</code> แล้วหรือยัง</td></tr>
+    <tr><td>ยอดกำไรในรายงานผิดพลาด</td><td>ตรวจสอบว่าใส่ต้นทุนสินค้าถูกต้องในหน้า <strong>แก้ไขสินค้า</strong></td></tr>
+  </tbody>
+</table>
+
+<div style="margin-top:40px;padding-top:20px;border-top:1px solid #e5e7eb;text-align:center;color:#9ca3af;font-size:11px;">
+  GreenPaw Systems — User Guide v1.0 | จัดทำโดย Kiro AI | กรกฎาคม 2026
+</div>
+
+</div><!-- end .page -->
+</body>
+</html>
