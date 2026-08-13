@@ -23,7 +23,15 @@ class PlantBatchController extends Controller
         $batches = PlantBatch::with(['product', 'creator'])
             ->when($statusFilter, fn ($q) => $q->where('status', $statusFilter))
             ->when($productFilter, fn ($q) => $q->where('product_id', $productFilter))
-            ->orderByRaw("FIELD(status,'ready','growing','harvested','failed')")
+            ->orderByRaw("
+                CASE status
+                    WHEN 'ready' THEN 1
+                    WHEN 'growing' THEN 2
+                    WHEN 'harvested' THEN 3
+                    WHEN 'failed' THEN 4
+                    ELSE 5
+                END
+            ")
             ->orderBy('expected_harvest_date')
             ->get();
 

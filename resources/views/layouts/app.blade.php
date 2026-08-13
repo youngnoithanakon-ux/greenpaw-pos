@@ -96,6 +96,7 @@
         .dropdown-menu a:hover,
         .dropdown-menu button:hover { background: #2d4a2d; color: #4ade80; }
         .dropdown-menu .active-item { color: #4ade80 !important; background: #2d4a2d; }
+        .dropdown.open .dropdown-menu { display: block; }
 
 
         .dropdown-user { font-size: 0.8rem; color: #86efac; padding: 10px 18px; }
