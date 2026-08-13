@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'GreenPaw Systems' }}</title>
+    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo_v2.jpg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         * { box-sizing: border-box; }
